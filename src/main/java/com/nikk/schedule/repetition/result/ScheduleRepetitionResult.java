@@ -1,16 +1,16 @@
-package com.tools.model.response;
+package com.nikk.schedule.repetition.result;
 
 import java.time.LocalDateTime;
 
-public class CalendarEventResponse {
+public class ScheduleRepetitionResult {
 
     private LocalDateTime initEventTime;
     private LocalDateTime endEventTime;
 
-    public CalendarEventResponse(){
+    public ScheduleRepetitionResult(){
     }
 
-    public CalendarEventResponse(LocalDateTime initEventTime, LocalDateTime endEventTime) {
+    public ScheduleRepetitionResult(LocalDateTime initEventTime, LocalDateTime endEventTime) {
         this.initEventTime = initEventTime;
         this.endEventTime = endEventTime;
     }
