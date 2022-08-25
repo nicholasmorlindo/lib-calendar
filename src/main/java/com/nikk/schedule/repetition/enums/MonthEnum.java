@@ -1,6 +1,5 @@
 package com.nikk.schedule.repetition.enums;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public enum MonthEnum {
@@ -24,10 +23,8 @@ public enum MonthEnum {
         this.monthCode = monthCode;
     }
 
-    public static List<Integer> containsMonth(List<MonthEnum> monthEnums) {
-        List<Integer> listMonthCode = new ArrayList<>();
-        monthEnums.stream().map(monthEnum -> listMonthCode.add(monthEnum.getMonthCode()));
-        return listMonthCode;
+    public static boolean containsMonth(int month, List<MonthEnum> monthEnums) {
+        return monthEnums.stream().anyMatch(monthFromList -> monthFromList.getMonthCode() == month);
     }
 
     public Integer getMonthCode() {

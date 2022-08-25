@@ -1,6 +1,5 @@
 package com.nikk.schedule.repetition.enums;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public enum DaysOfWeekEnum {
@@ -19,15 +18,9 @@ public enum DaysOfWeekEnum {
         this.numDay = numDay;
     }
 
-    public static List<Integer> containsDays(List<DaysOfWeekEnum> daysOfWeekEnums) {
-        List<Integer> listDayCode = new ArrayList<>();
-        daysOfWeekEnums.stream().map(monthEnum -> listDayCode.add(monthEnum.getNumDay()));
-        return listDayCode;
+    public static boolean containsDays(int day, List<DaysOfWeekEnum> daysOfWeekEnums) {
+        return daysOfWeekEnums.stream().anyMatch(daysOfWeek -> daysOfWeek.getNumDay() == day);
     }
-
-//    public static boolean containsDaysOfWeek(int num) {
-//        if (num == )
-//    }
 
     public int getNumDay() {
         return numDay;
