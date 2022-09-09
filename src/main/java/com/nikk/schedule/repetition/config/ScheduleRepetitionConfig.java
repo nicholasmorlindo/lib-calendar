@@ -1,6 +1,5 @@
 package com.nikk.schedule.repetition.config;
 
-import com.nikk.schedule.repetition.TimeRepetition;
 import com.nikk.schedule.repetition.enums.DaysOfWeekEnum;
 import com.nikk.schedule.repetition.enums.MonthEnum;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class ScheduleRepetitionConfig {
 
-    private List<TimeRepetition> listTimeRepetition;
+    private List<TimeRepetitionConfig> listTimeRepetition;
 
     private List<MonthEnum> listMonth;
 
@@ -24,11 +23,11 @@ public class ScheduleRepetitionConfig {
         this.endDate = endDate;
     }
 
-    public List<TimeRepetition> getListTimeRepetition() {
+    public List<TimeRepetitionConfig> getListTimeRepetition() {
         return listTimeRepetition;
     }
 
-    public void setListTimeRepetition(List<TimeRepetition> listTimeRepetition) {
+    public void setListTimeRepetition(List<TimeRepetitionConfig> listTimeRepetition) {
         this.listTimeRepetition = listTimeRepetition;
     }
 

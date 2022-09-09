@@ -1,9 +1,10 @@
-package com.nikk.schedule.repetition.utils;
+package com.nikk.schedule.repetition;
 
 import com.nikk.schedule.repetition.enums.MonthEnum;
-import com.nikk.schedule.repetition.TimeRepetition;
+import com.nikk.schedule.repetition.config.TimeRepetitionConfig;
 import com.nikk.schedule.repetition.enums.DaysOfWeekEnum;
 import com.nikk.schedule.repetition.config.ScheduleRepetitionConfig;
+import com.nikk.schedule.repetition.exceptions.ScheduleRepetitionException;
 import com.nikk.schedule.repetition.result.ScheduleRepetitionResult;
 
 import java.time.LocalDate;
@@ -15,12 +16,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.nikk.schedule.repetition.exceptions.DataMissingException.validateFields;
+import static com.nikk.schedule.repetition.exceptions.DateValidationException.validateDates;
+
 public class ScheduleRepetition {
 
-    public static List<ScheduleRepetitionResult> createScheduleRepetition (ScheduleRepetitionConfig config) {
+    public static List<ScheduleRepetitionResult> createScheduleRepetition (ScheduleRepetitionConfig config) throws ScheduleRepetitionException {
+
+        validateFields(config);
+        validateDates(config);
 
         List<ScheduleRepetitionResult> listScheduleRepetitionResult = new ArrayList<>();
-        List<TimeRepetition> listTimeRepetitionToUse = config.getListTimeRepetition().isEmpty() ? createTimeRepetitionDefault() : config.getListTimeRepetition();
+        List<TimeRepetitionConfig> listTimeRepetitionToUse = config.getListTimeRepetition().isEmpty() ? createTimeRepetitionDefault() : config.getListTimeRepetition();
         List<MonthEnum> listMonthToUse = config.getListMonth().isEmpty() ? createMonthEnumDefault() : config.getListMonth();
         List<DaysOfWeekEnum> listDaysOfWeekToUse = config.getListDays().isEmpty() ? createDaysOfWeekEnumDefault() : config.getListDays();
 
@@ -43,21 +50,21 @@ public class ScheduleRepetition {
         return listScheduleRepetitionResult;
     }
 
-    private static void fillListWithScheduleRepetition(List<ScheduleRepetitionResult> listScheduleRepetitionResult, List<TimeRepetition> timeToUse, LocalDate auxDate) {
-        for (TimeRepetition time : timeToUse) {
+    private static void fillListWithScheduleRepetition(List<ScheduleRepetitionResult> listScheduleRepetitionResult, List<TimeRepetitionConfig> timeToUse, LocalDate auxDate) {
+        for (TimeRepetitionConfig time : timeToUse) {
             listScheduleRepetitionResult.add(buildScheduleRepetitionResult(auxDate, time));
         }
     }
 
-    private static ScheduleRepetitionResult buildScheduleRepetitionResult(LocalDate date, TimeRepetition time) {
+    private static ScheduleRepetitionResult buildScheduleRepetitionResult(LocalDate date, TimeRepetitionConfig time) {
         LocalDateTime begin = LocalDateTime.of(date, time.getInitEventTime());
         LocalDateTime end = LocalDateTime.of(date, time.getEndEventTime());
         return new ScheduleRepetitionResult(begin, end);
     }
 
-    private static List<TimeRepetition> createTimeRepetitionDefault() {
-        List<TimeRepetition> listTimeRepetition = new ArrayList<>();
-        TimeRepetition timeRepetition = new TimeRepetition();
+    private static List<TimeRepetitionConfig> createTimeRepetitionDefault() {
+        List<TimeRepetitionConfig> listTimeRepetition = new ArrayList<>();
+        TimeRepetitionConfig timeRepetition = new TimeRepetitionConfig();
         timeRepetition.setInitEventTime(LocalTime.of(8,0,0));
         timeRepetition.setEndEventTime(LocalTime.of(10,0,0));
 
@@ -75,10 +82,10 @@ public class ScheduleRepetition {
         return listDaysOfWeek.collect(Collectors.toList());
     }
 
-    public static void main(String[] args) {
-        List<TimeRepetition> timeRepetitionList = new ArrayList<>();
-        TimeRepetition timeRepetition = new TimeRepetition();
-        TimeRepetition timeRepetition2 = new TimeRepetition();
+    public static void main(String[] args) throws ScheduleRepetitionException {
+        List<TimeRepetitionConfig> timeRepetitionList = new ArrayList<>();
+        TimeRepetitionConfig timeRepetition = new TimeRepetitionConfig();
+        TimeRepetitionConfig timeRepetition2 = new TimeRepetitionConfig();
         timeRepetition.setInitEventTime(LocalTime.of(10,0,0));
         timeRepetition.setEndEventTime(LocalTime.of(12,0,0));
         timeRepetition2.setInitEventTime(LocalTime.of(20,0,0));

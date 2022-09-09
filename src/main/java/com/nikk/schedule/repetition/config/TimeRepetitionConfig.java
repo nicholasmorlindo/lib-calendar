@@ -1,9 +1,9 @@
-package com.nikk.schedule.repetition;
+package com.nikk.schedule.repetition.config;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 
-public class TimeRepetition {
+public class TimeRepetitionConfig {
 
     @NotNull
     private LocalTime initEventTime;
@@ -11,7 +11,7 @@ public class TimeRepetition {
     @NotNull
     private LocalTime endEventTime;
 
-    public TimeRepetition(){
+    public TimeRepetitionConfig(){
     }
 
     public LocalTime getInitEventTime() {
