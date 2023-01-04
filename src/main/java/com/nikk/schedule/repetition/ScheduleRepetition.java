@@ -1,9 +1,11 @@
 package com.nikk.schedule.repetition;
 
-import com.nikk.schedule.repetition.enums.MonthEnum;
+import com.nikk.schedule.repetition.config.ScheduleRepetitionConfig;
 import com.nikk.schedule.repetition.config.TimeRepetitionConfig;
 import com.nikk.schedule.repetition.enums.DaysOfWeekEnum;
-import com.nikk.schedule.repetition.config.ScheduleRepetitionConfig;
+import com.nikk.schedule.repetition.enums.MonthEnum;
+import com.nikk.schedule.repetition.exceptions.DataMissingException;
+import com.nikk.schedule.repetition.exceptions.DateValidationException;
 import com.nikk.schedule.repetition.exceptions.ScheduleRepetitionException;
 import com.nikk.schedule.repetition.result.ScheduleRepetitionResult;
 
@@ -15,9 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.nikk.schedule.repetition.exceptions.DataMissingException.validateFields;
-import static com.nikk.schedule.repetition.exceptions.DateValidationException.validateDates;
 
 public class ScheduleRepetition {
 
@@ -80,6 +79,22 @@ public class ScheduleRepetition {
     private static List<DaysOfWeekEnum> createDaysOfWeekEnumDefault() {
         Stream<DaysOfWeekEnum> listDaysOfWeek = Arrays.stream(DaysOfWeekEnum.values());
         return listDaysOfWeek.collect(Collectors.toList());
+    }
+
+    private static void validateFields(ScheduleRepetitionConfig config) throws DataMissingException {
+        if (config.getBeginDate() == null || config.getEndDate() == null) {
+            throw new DataMissingException("Begin Date or End Date are missing");
+        }
+    }
+
+    private static void validateDates (ScheduleRepetitionConfig config) throws DateValidationException {
+        if (config.getEndDate().compareTo(config.getBeginDate()) < 0) {
+            throw new DateValidationException("beginDate must be earlier than endDate");
+        }
+
+        if (config.getBeginDate().compareTo(LocalDate.now()) < 0) {
+            throw new DateValidationException("beginDate must be in the present or future");
+        }
     }
 
     public static void main(String[] args) throws ScheduleRepetitionException {
